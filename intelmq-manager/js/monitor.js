@@ -4,6 +4,16 @@ var bot_logs = {};
 var bot_queues = {};
 var reload_queues = null;
 var reload_logs = null;
+var app = app || {};
+var buffered_bot = null;
+load_configuration(() => {
+    // refresh parameters panel when ready
+    if (buffered_bot) {
+        refresh_parameters_panel(buffered_bot);
+    }
+});
+
+
 
 var $dq = $("#destination-queues");
 $('#log-table').dataTable({
@@ -290,7 +300,7 @@ function select_bot(bot_id, history_push = false) {
     reload_queues = new Interval(load_bot_queues, RELOAD_QUEUES_EVERY * 1000, true);
 
     $("#destination-queues-table").addClass('highlightHovering');
-    if (bot_id != ALL_BOTS) {
+    if (bot_id !== ALL_BOTS) {
         $("#logs-panel, #inspect-panel").css('display', 'block');
         $("#source-queue-table-div").css('display', 'block');
         $("#internal-queue-table-div").css('display', 'block');
@@ -305,6 +315,9 @@ function select_bot(bot_id, history_push = false) {
         // control buttons in inspect panel
         $("#inspect-panel .panel-heading .control-buttons").remove();
         $("#inspect-panel .panel-heading").prepend(generate_control_buttons(bot_id, false, null, true));
+
+        // parameters panel
+        refresh_parameters_panel(bot_id);
     } else {
         $("#logs-panel, #inspect-panel").css('display', 'none');
         $("#source-queue-table-div").css('display', 'none');
@@ -314,6 +327,32 @@ function select_bot(bot_id, history_push = false) {
         $("#destination-queues-table-div").addClass('col-md-12');
         $("#destination-queue-header").html("Queue");
 }
+}
+
+function refresh_parameters_panel(bot_id) {
+    if (!app.nodes) {
+        // we're not yet ready, buffer the bot for later
+        buffered_bot = [bot_id];
+        return;
+    }
+    let $panel = $("#parameters-panel .panel-body");
+    $panel.text("");
+    var params = app.nodes[bot_id].parameters;
+    console.log(params);
+    for (let key in params) {
+        $el = $("<li><b>"+key+"</b>: "+params[key]+"</li>");
+        console.log(params[key],key);
+        if (params[key].indexOf && params[key].indexOf(ALLOWED_PATH) === 0) {
+            $.get(LOAD_CONFIG_SCRIPT + "?file=" + params[key], (data) => {
+                $("<pre>"+data+"</pre>").appendTo($el);
+            });
+        }
+        $el.appendTo($panel);
+    }
+    if(!Object.keys(params).length) {
+        console.log(params, "hhh");
+        $panel.html("No parameters.");
+    }
 }
 
 function show_extended_message(index) {

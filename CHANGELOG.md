@@ -17,6 +17,7 @@ CHANGELOG
 
 #### Monitor
 * Fix link to monitor page (#157).
+* Parameters panel that displays bot parameters. If there is a file or a directory from within the allowed path (specified in configs.php), the contents gets displayed so the administrator is aware about the configuration the bot has.
 
 #### Check
 
