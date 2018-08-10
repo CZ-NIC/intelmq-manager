@@ -5,6 +5,8 @@ CHANGELOG
 ------------------
 
 ### Backend
+- Emit a more specific error message for cases like #160.
+- The timeout for calls to `intelmqctl` has been raised to 20s (#164).
 
 ### Pages
 
@@ -12,16 +14,26 @@ CHANGELOG
 
 #### Configuration
 - Underscore is now allowed for new parameter names (#153).
+- Manager now supports named queue paths. They are displayed along the edges and editable.
+- Double click edits the bot or the queue
+- Code cleanup: New modal window for performing multiple dialog actions. Intercepting visjs internals without using external Hammer library.
+- Enter key submits the edit bot dialog.
+- Clicking on the side-menu bot name cycles amongst bot instances in the canvas.
+- Got rid of the dumb "#load" and "#new" parameter → "#new" converted into a standard URL parameter "configuration=new".
+- Button to turn on/off physics
 
 #### Management
 
 #### Monitor
 * Fix link to monitor page (#157).
-* Parameters panel that displays bot parameters. If there is a file or a directory from within the allowed path (specified in configs.php), the contents gets displayed so the administrator is aware about the configuration the bot has.
+* The new parameters panel that displays the bot's parameters on the bot's monitor page. For parameters which are filenames, the content of these files will be shown as text if they reside in the allowed paths (set in config.php).
+* When needed, Path column appears, resizing the Queues panel accordingly.
+* Connected with the configuration panel → a link appears next to the bot title that takes you directly to the bot
 
 #### Check
 
 ### Documentation
+- Add a FAQ and add a section about the docker issue #160.
 
 ### Third-party libraries
 
