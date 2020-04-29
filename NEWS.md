@@ -3,10 +3,52 @@ NEWS
 
 See the changelog for a full list of changes.
 
+2.1.1 (2020-04-27)
+------------------
+
+### Security
+* **Never ever run intelmq-manager on a public webserver without SSL and proper authentication**.
+* Bernhard Herzog (Intevation) discovered that the backend incorrectly handled messages given by user-input in the "send" functionality of the Inspect-tool of the Monitor component. An attacker with access to the IntelMQ Manager could possibly use this issue to execute arbitrary code with the privileges of the webserver.
+* Use IntelMQ Manager only from a browser that can only access internal, trusted sites. (Because CSRF development is under way, see [#111](github.com/certtools/intelmq/issues/111)).
+
+### Configuration
+The environment variable name was corrected from `INTELMQ_MANGER_CONTROLLER_CMD` to `INTELMQ_MANGAER_CONTROLLER_CMD` you might need to adapt your configuration.
+The old name will be available until version 3.0.
+
+
+2.1.0 (2019-10-15)
+------------------
+The environment variable name was corrected from `INTELMQ_MANGER_CONTROLER_CMD` to `INTELMQ_MANGER_CONTROLLER_CMD` you might need to adapt your configuration.
+
+
+2.0.0 (2019-05-22)
+------------------
+
+No changes are required by administrators.
+
+
+1.1.0 (2018-11-12)
+------------------
+
+No changes are required by administrators.
+
+1.0.1 (2018-09-24)
+------------------
+
+No changes are required by administrators.
+
+
+1.0.0 (2018-04-23)
+------------------
+
+No changes are required by administrators.
+
+
 0.3.1
 -----
 
 No changes are required by administrators.
+
 
 0.3
 ---

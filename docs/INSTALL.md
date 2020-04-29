@@ -4,8 +4,10 @@
 2. [Install Dependencies](#install-dependencies)
    * [Ubuntu 14.04 / Debian 8](#ubuntu-1404--debian-8)
    * [Ubuntu 16.04](#ubuntu-1604)
+   * [Ubuntu 18.04](#ubuntu-1804)
+   * [Debian 10](#debian-10)
    * [CentOS 7](#centos-7)
-   * [openSUSE Leap 42.2](#opensuse-leap-422)
+   * [openSUSE Leap 15.1](#opensuse-leap-151)
 3. [Installation](#installation)
    * [Native packages](#native-packages)
    * [Manually](#manually)
@@ -27,9 +29,9 @@ The following instructions assume the following requirements:
 * a supported operating system
 
 Supported and recommended operating systems are:
-* Debian 8
-* OpenSUSE Leap 42.2
-* Ubuntu: 14.04 and 16.04 LTS
+* Debian 8, 9, 10
+* OpenSUSE Leap 42.2, 15
+* Ubuntu: 14.04, 16.04, 18.04 LTS
 
 Partly supported are:
 * RHEL 7
@@ -46,10 +48,22 @@ If you are using native packages, you can simply skip this section as all depend
 apt-get install git apache2 php5 libapache2-mod-php5
 ```
 
-## Ubuntu 16.04
+## Ubuntu 16.04 / Debian 9
 
 ```bash
 apt-get install git apache2 php libapache2-mod-php7.0
+```
+
+## Ubuntu 18.04
+
+```bash
+apt-get install git apache2 php libapache2-mod-php7.2
+```
+
+## Debian 10
+
+```bash
+apt install libapache2-mod-php7.3
 ```
 
 ## CentOS 7
@@ -59,10 +73,10 @@ yum install epel-release
 yum install git httpd httpd-tools php
 ```
 
-## openSUSE Leap 42.2
+## openSUSE Leap 15.1
 
 ```bash
-yum install git apache2 apache2-utils apache2-mod_php7
+zypper install git apache2 apache2-utils apache2-mod_php7
 ```
 
 # Installation
@@ -106,12 +120,13 @@ chgrp www-data /opt/intelmq/etc/*.conf /opt/intelmq/etc/manager/positions.conf
 chmod g+w /opt/intelmq/etc/*.conf /opt/intelmq/etc/manager/positions.conf
 ```
 
+### Allow access to intelmqctl
 Give webserver user (www-data, wwwrun, apache or nginx) permissions to execute intelmqctl as intelmq user. Edit the `/etc/sudoers` file and add the adapted following line:
 ```javascript
 www-data ALL=(intelmq) NOPASSWD: /usr/local/bin/intelmqctl
 ```
 
-The default way of accessing `intelmqctl` program is by command `sudo -u intelmq /usr/local/bin/intelmqctl`. If that does not suit you, you may set an environmental variable   `INTELMQ_MANGER_CONTROLER_CMD` to I.E. `~/.local/bin/intelmqctl` or `PATH=~/.local/bin intelmqctl` or `sudo -u intelmq ~/.local/bin/intelmqctl` or whatever you need.
+The default way of accessing `intelmqctl` program is by command `sudo -u intelmq /usr/local/bin/intelmqctl`. If that does not suit you, you may set an environmental variable `INTELMQ_MANGER_CONTROLLER_CMD` to I.E. `~/.local/bin/intelmqctl` or `PATH=~/.local/bin intelmqctl` or `sudo -u intelmq ~/.local/bin/intelmqctl` or whatever you need.
 
 ### Notes on CentOS / RHEL
 
@@ -127,6 +142,8 @@ If you can help to fix these issues, please join us!
 The way the current version is written, anyone can send a POST request and change intelmq's configuration files via sending a HTTP POST request to ``save.php``. Intelmq-manager will reject non JSON data but nevertheless, we don't want anyone to be able to reconfigure an intelmq installation.
 
 Therefore you will need authentication and SSL.
+
+Use IntelMQ Manager only from a browser that can only access internal, trusted sites. (Because CSRF development is under way, see [#111](https://github.com/certtools/intelmq-manager/issues/111)).
 
 In addition, intelmq currently stores plaintext passwords in its configuration files. These can be read via intelmq-manager.
 
